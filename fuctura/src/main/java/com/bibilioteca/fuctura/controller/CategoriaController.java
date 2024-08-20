@@ -17,7 +17,7 @@ public class CategoriaController {
     @Autowired
     private CategoriaService categoriaService;
 
-   @Autowired
+    @Autowired
     private ModelMapper modelMapper;
 
     //@GetMapping("{id}") = buscar id
@@ -29,15 +29,15 @@ public class CategoriaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoriaDtos> findById(@PathVariable Integer id) {
-      Categoria cat = categoriaService.findById(id);
-      CategoriaDtos categoriaDtos = modelMapper.map(cat, CategoriaDtos.class);
-      return ResponseEntity.ok().body(categoriaDtos);
+        Categoria cat = categoriaService.findById(id);
+        CategoriaDtos categoriaDtos = modelMapper.map(cat, CategoriaDtos.class);
+        return ResponseEntity.ok().body(categoriaDtos);
     }
 
     @GetMapping
-    public ResponseEntity <List<CategoriaDtos>> findAll() {
+    public ResponseEntity<List<CategoriaDtos>> findAll() {
         List<Categoria> list = categoriaService.findAll();
-       List<CategoriaDtos> listDto = list.stream().map(obj -> modelMapper.map(obj, CategoriaDtos.class)).collect(Collectors.toList());
+        List<CategoriaDtos> listDto = list.stream().map(obj -> modelMapper.map(obj, CategoriaDtos.class)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDto);
     }
 
@@ -47,11 +47,20 @@ public class CategoriaController {
         return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDtos.class));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoriaDtos> updtate(@PathVariable Integer id, @RequestBody CategoriaDtos categoriaDtos) {
+        categoriaDtos.setId(id);
+        Categoria cat = categoriaService.update(categoriaDtos);
+        return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDtos.class));
+}
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         categoriaService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+
 }
 
 //localhost:8080/categorid/id
