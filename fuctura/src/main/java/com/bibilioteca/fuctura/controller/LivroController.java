@@ -39,4 +39,21 @@ public class LivroController {
         return ResponseEntity.ok().body(list.stream().map(obj -> new LivrosDtos(obj)).collect(Collectors.toList()));
 
     }
+    @PostMapping//salvar
+    public ResponseEntity<LivrosDtos> save(@RequestParam(value = "categoria", defaultValue = "0") Integer id_cat, @RequestBody LivrosDtos livrosDtos) {
+        Livro livro = livroService.save(id_cat, livrosDtos);
+        return ResponseEntity.ok().body(new LivrosDtos(livro));
+    }
+
+    @PutMapping//atualizar
+    public ResponseEntity<LivrosDtos> update(@RequestParam(value = "categoria", defaultValue = "0") Integer id_cat, @RequestBody LivrosDtos livrosDtos) {
+        Livro livro = livroService.update(id_cat, livrosDtos);
+        return ResponseEntity.ok().body(new LivrosDtos(livro));
+    }
+
+  @DeleteMapping("/{id}")//deletar
+    public ResponseEntity<Void> delete(@PathVariable Integer id, @RequestBody LivrosDtos livrosDtos) {
+        livroService.delete(id);
+        return ResponseEntity.ok().build();
+  }
 }
