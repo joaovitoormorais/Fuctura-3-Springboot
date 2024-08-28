@@ -71,6 +71,8 @@ public class CategoriaService {
                     throw new ObjectNotFoundException("Categoria não encontrada");
                 }
 
+
+
             }
 
     }

@@ -1,10 +1,13 @@
 package com.bibilioteca.fuctura.controller;
 
+import com.bibilioteca.fuctura.dtos.CategoriaDtos;
 import com.bibilioteca.fuctura.dtos.LivrosDtos;
 import com.bibilioteca.fuctura.models.Livro;
 import com.bibilioteca.fuctura.services.LivroService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.stream.Collectors;
 //@RequestMapping, enquanto o @RestController deve serusada em argumentos sem parâmetro ou com
 //apenas parâmetros opcionais, por isso eu tinha digitado de maneira errada.
 @RequestMapping("/{livro}")
+@CrossOrigin("*")
 public class LivroController {
 
     @Autowired
@@ -26,6 +30,7 @@ public class LivroController {
     }
 
     @GetMapping
+    @Operation(summary = "Buscar todos os livros de acordo com um id de uma categoria específica")
    public ResponseEntity<List<LivrosDtos>> findAll(@RequestParam(value = "categoria", defaultValue = "0") Integer id) {
        List<Livro> list = livroService.findAll(id);
        return ResponseEntity.ok().body(list.stream().map(obj -> new LivrosDtos(obj)).collect(Collectors.toList()));
@@ -38,5 +43,24 @@ public class LivroController {
         List<Livro> list = livroService.findAllByCategoriaNome(nome);
         return ResponseEntity.ok().body(list.stream().map(obj -> new LivrosDtos(obj)).collect(Collectors.toList()));
 
+    }
+
+    @PostMapping
+    public ResponseEntity<LivrosDtos> save(@RequestParam(value = "categoria", defaultValue = "0") Integer id_cat, @RequestBody LivrosDtos livrosDtos) {
+        Livro livro = livroService.save(id_cat, livrosDtos);
+        return ResponseEntity.ok().body(new LivrosDtos(livro));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<LivrosDtos> update(@PathVariable Integer id, @RequestBody LivrosDtos livrosDtos) {
+        Livro livro = livroService.update(id, livrosDtos);
+        return ResponseEntity.ok().body(new LivrosDtos(livro));
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        livroService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }

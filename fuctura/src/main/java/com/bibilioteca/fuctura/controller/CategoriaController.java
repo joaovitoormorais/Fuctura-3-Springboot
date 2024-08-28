@@ -1,6 +1,7 @@
 package com.bibilioteca.fuctura.controller;
 
 import com.bibilioteca.fuctura.dtos.CategoriaDtos;
+import com.bibilioteca.fuctura.dtos.LivrosDtos;
 import com.bibilioteca.fuctura.models.Categoria;
 import com.bibilioteca.fuctura.services.CategoriaService;
 import org.modelmapper.ModelMapper;
@@ -9,10 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categorias")
+@CrossOrigin("*")
 public class CategoriaController {
     @Autowired
     private CategoriaService categoriaService;
@@ -41,26 +44,22 @@ public class CategoriaController {
         return ResponseEntity.ok().body(listDto);
     }
 
-    @PostMapping
-    public ResponseEntity<CategoriaDtos> save(@RequestBody CategoriaDtos categoriaDtos) {
+  @PostMapping
+    public ResponseEntity<CategoriaDtos> save(@PathVariable Integer id, @RequestBody CategoriaDtos categoriaDtos) {
         Categoria cat = categoriaService.save(categoriaDtos);
         return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDtos.class));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoriaDtos> updtate(@PathVariable Integer id, @RequestBody CategoriaDtos categoriaDtos) {
+    public ResponseEntity<CategoriaDtos> update(@PathVariable Integer id, @RequestBody CategoriaDtos categoriaDtos) {
         categoriaDtos.setId(id);
         Categoria cat = categoriaService.update(categoriaDtos);
         return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDtos.class));
-}
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         categoriaService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
-
-
 }
-
-//localhost:8080/categorid/id
