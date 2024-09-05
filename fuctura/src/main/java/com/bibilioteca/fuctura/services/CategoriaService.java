@@ -46,27 +46,26 @@ public class CategoriaService {
         return categoriaRepository.save(modelMapper.map(categoriaDtos, Categoria.class));
     }
 
-    public void delete(Integer id) {
+ public void delete(Integer id) {
         findById(id);
         Optional<Categoria> cat = categoriaRepository.findById(id);
-        if (!cat.get().getLivros().isEmpty()) {
-            throw new DataIntegrityViolationException("Categoria possui livros, não pode ser deletada!!!");
+        if(!cat.get().getLivros().isEmpty()) {
+            throw new DataIntegrityViolationException("Categoria possui livros, não pode ser deletada!");
+
         }
         categoriaRepository.deleteById(id);
+ }
 
-    }
-
-    private void findByNome(CategoriaDtos categoriaDtos) {
+   private void findByNome(CategoriaDtos categoriaDtos) {
         Optional<Categoria> cat = categoriaRepository.findByNome(categoriaDtos.getNome());
-        if (cat.isPresent() && cat.get().getNome().equalsIgnoreCase(categoriaDtos.getNome())) ;
-        throw new IllegalArgumentException("Já existe uma categoria com esse nome");
+        if(cat.isPresent() && cat.get().getNome().equalsIgnoreCase(categoriaDtos.getNome()));
+        throw new IllegalArgumentException("Já existe uma categoria com esse nome!");
     }
 
-    public void findByNome(String nome) {
-        Optional<Categoria> categoria = categoriaRepository.findByNomeContainingIgnoreCase(nome);
-        if (categoria.isEmpty()) {
-            throw new ObjectNotFoundException("Categoria '" + nome + "' não encontrada.");
-
+ public void findByNome(String nome) {
+        Optional<Categoria> cat = categoriaRepository.findByNome(nome);
+        if(cat.isEmpty()) {
+            throw new ObjectNotFoundException("Categoria não existe!");
         }
 
 

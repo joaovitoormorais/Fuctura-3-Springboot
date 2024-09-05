@@ -19,16 +19,16 @@ public class LivroController {
     @Autowired
     private LivroService livroService;
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<LivrosDtos> findById(@PathVariable Integer id) {
+    @GetMapping(value = "/{id}" )
+    public ResponseEntity <LivrosDtos> findById(@PathVariable Integer id) {
         Livro livro = livroService.findById(id);
-        return ResponseEntity.ok().body(new LivrosDtos(livro));
+    return ResponseEntity.ok().body(new LivrosDtos(livro));
     }
 
     @GetMapping
-    public ResponseEntity<List<LivrosDtos>> findAll(@RequestParam(value = "categoria", defaultValue = "0") Integer id) {
-        List<Livro> list = livroService.findAll(id);
-        return ResponseEntity.ok().body(list.stream().map(obj -> new LivrosDtos(obj)).collect(Collectors.toList()));
+   public ResponseEntity<List<LivrosDtos>> findAll(@RequestParam(value = "categoria", defaultValue = "0") Integer id) {
+       List<Livro> list = livroService.findAll(id);
+       return ResponseEntity.ok().body(list.stream().map(obj -> new LivrosDtos(obj)).collect(Collectors.toList()));
     }
 
     //localhost:8081/livro?categoria=0
@@ -39,23 +39,4 @@ public class LivroController {
         return ResponseEntity.ok().body(list.stream().map(obj -> new LivrosDtos(obj)).collect(Collectors.toList()));
 
     }
-
-    @PostMapping
-    public ResponseEntity<LivrosDtos> save(@RequestParam(value = "categoria", defaultValue = "0") Integer id_cat, @RequestBody LivrosDtos livrosDtos) {
-        Livro livro = livroService.save(id_cat, livrosDtos);
-        return ResponseEntity.ok().body(new LivrosDtos(livro));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<LivrosDtos> update(@PathVariable Integer id, @RequestBody LivrosDtos livrosDtos) {
-        Livro livro = livroService.update(id, livrosDtos);
-        return ResponseEntity.ok().body(new LivrosDtos(livro));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        livroService.delete(id);
-        return ResponseEntity.ok().build();
-    }
 }
-
