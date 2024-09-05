@@ -3,11 +3,22 @@ package com.bibilioteca.fuctura.dtos;
 import com.bibilioteca.fuctura.enums.Tamanho;
 import com.bibilioteca.fuctura.models.Categoria;
 import com.bibilioteca.fuctura.models.Livro;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 
 public class LivrosDtos {
 
     private Integer id;
     private String autor;
+   @NotEmpty(message = "O campo autor não pode ficar vazio!")
+   @Length(min = 3, max = 20, message = "O campo autor deve conter de 3 a 20 caracteres")
+   @NotEmpty(message = "O campo texto não pode ficar vazio!")
+   @Length(min = 1000, max = 10000, message = "O campo texto deve conter de 1000 a 10000 carcteres")
+   @NotEmpty(message = "O campo título não pode ficar vazio!")
+   @Size(min = 3, max = 50, message = "O campo títuo deve conter de 3 a 50 caracteres")
     private Tamanho tamanho;
     private String texto;
     private String titulo;

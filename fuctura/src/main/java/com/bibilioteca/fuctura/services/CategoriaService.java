@@ -23,9 +23,9 @@ public class CategoriaService {
 
     public static Categoria findById(Integer id) {
         Optional<Categoria> cat = categoriaRepository.findById(id);
-       if(cat.isPresent()) {
-           return cat.get();
-       }
+        if (cat.isPresent()) {
+            return cat.get();
+        }
         throw new ObjectNotFoundException("Categoria não encontrada!");
     }
 
@@ -35,9 +35,9 @@ public class CategoriaService {
     }
 
     public Categoria save(CategoriaDtos categoriaDtos) {
-     Categoria categoria = modelMapper.map(categoriaDtos, Categoria.class);
-    categoria.setId(null);
-    return categoriaRepository.save(modelMapper.map(categoriaDtos, Categoria.class));
+        Categoria categoria = modelMapper.map(categoriaDtos, Categoria.class);
+        categoria.setId(null);
+        return categoriaRepository.save(modelMapper.map(categoriaDtos, Categoria.class));
     }
 
     public Categoria update(CategoriaDtos categoriaDtos) {
@@ -56,25 +56,21 @@ public class CategoriaService {
 
     }
 
-    private void findByNome(CategoriaDtos categoriaDto) {
-        Optional<Categoria> cat = categoriaRepository.findByNome(categoriaDto.getNome());
-        if (cat.isPresent() && cat.get().getNome().equalsIgnoreCase(categoriaDto.getNome())) {
-            throw new IllegalArgumentException("Já existe uma categoria com este nome " + categoriaDto.getNome());
+    private void findByNome(CategoriaDtos categoriaDtos) {
+        Optional<Categoria> cat = categoriaRepository.findByNome(categoriaDtos.getNome());
+        if (cat.isPresent() && cat.get().getNome().equalsIgnoreCase(categoriaDtos.getNome())) ;
+        throw new IllegalArgumentException("Já existe uma categoria com esse nome");
+    }
+
+    public void findByNome(String nome) {
+        Optional<Categoria> categoria = categoriaRepository.findByNomeContainingIgnoreCase(nome);
+        if (categoria.isEmpty()) {
+            throw new ObjectNotFoundException("Categoria '" + nome + "' não encontrada.");
 
         }
 
-            }
 
-            public void buscarPorNome(String nome) {
-                Optional<Categoria> cat = categoriaRepository.findByNomeContainingIgnoreCase(nome);
-                if (cat.isEmpty()) {
-                    throw new ObjectNotFoundException("Categoria não encontrada");
-                }
-
-
-
-            }
 
     }
 
-
+}

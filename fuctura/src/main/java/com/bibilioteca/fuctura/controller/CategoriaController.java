@@ -42,25 +42,23 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoriaDtos> save(@RequestBody CategoriaDtos categoriaDtos) {
-        Categoria cat = categoriaService.save(categoriaDtos);
-        return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDtos.class));
+        public ResponseEntity<CategoriaDtos> save(@PathVariable Integer id, @RequestBody CategoriaDtos categoriaDtos) {
+            Categoria cat = categoriaService.save(categoriaDtos);
+            return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDtos.class));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoriaDtos> updtate(@PathVariable Integer id, @RequestBody CategoriaDtos categoriaDtos) {
+    public ResponseEntity<CategoriaDtos> update(@PathVariable Integer id, @RequestBody CategoriaDtos categoriaDtos) {
         categoriaDtos.setId(id);
         Categoria cat = categoriaService.update(categoriaDtos);
         return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDtos.class));
-}
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        categoriaService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 
-
+    @DeleteMapping("/{id}")
+        public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        categoriaService.delete(id);
+        return ResponseEntity.ok().build();
+    }
 }
 
 //localhost:8080/categorid/id
